@@ -33,7 +33,13 @@ router.post("/login", async (req, res, next) => {
     const userData = req.body;
     const validateData = await loginValidationSchema.validate(userData);
     const result = await userController.login(validateData);
-    const token = await jwt.sign({ email: req.body.email }, "shhhhh");
+    const token = await jwt.sign(
+      { email: req.body.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_DURATION,
+      }
+    );
     res.json({ msg: "Login Successful", data: result, token });
   } catch (e) {
     next(e);
