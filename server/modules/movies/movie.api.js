@@ -28,6 +28,8 @@ router.post("/add", async (req, res, next) => {
 
 router.post("/list/user", async (req, res, next) => {
   try {
+    const { page, limit } = req.body;
+    const skip = (page - 1) * limit;
     const movies = await movieModel.aggregate([
       { $match: {} },
 
@@ -44,7 +46,8 @@ router.post("/list/user", async (req, res, next) => {
         },
       },
     ]);
-
+    const totalMovie = await movieController.findAll().countDocuments();
+    const totalPage = totalMovie / limit;
     res.json({ msg: "success", movieDetail: movies });
   } catch (e) {
     next(e);

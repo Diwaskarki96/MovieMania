@@ -3,6 +3,9 @@ const movieModel = require("./movie.model");
 const add = async (payload) => {
   return await movieModel.create(payload);
 };
+const findAll = async () => {
+  return await movieModel.find();
+};
 const findId = async ({ id }) => {
   return await movieModel.findById({ _id: id });
 };
@@ -12,4 +15,4 @@ const updateById = async (id, payload) => {
 const remove = async ({ id }) => {
   return await movieModel.deleteOne({ _id: id });
 };
-module.exports = { add, findId, updateById, remove };
+module.exports = { add, findId, updateById, remove, findAll };
