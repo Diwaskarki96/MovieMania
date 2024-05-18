@@ -17,6 +17,7 @@ import TrailerDialog from "../components/TrailerDialog";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteMovieDialog from "../components/DeleteMovieDialog";
 import popupAlert from "../utils/alert";
+import Loader from "../components/Loader";
 
 const MovieDetail = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const MovieDetail = () => {
   //console.log(data.data.movieDetail);
   const movieDetail = data?.data?.movieDetail;
   if (isPending) {
-    return <CircularProgress />;
+    return <Loader />;
   }
   return (
     <Container sx={{ gap: "1rem" }}>

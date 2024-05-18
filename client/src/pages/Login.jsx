@@ -7,7 +7,6 @@ import {
   Button,
   FormControl,
   FormHelperText,
-  LinearProgress,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,6 +18,7 @@ import {
   openErrorSnackbar,
   openSuccessSnackbar,
 } from "../store/slices/snackbarSlice";
+import Loader from "../components/Loader";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -71,6 +71,7 @@ const Login = () => {
         {(formik) => {
           return (
             <div>
+              {isPending && <Loader />}
               <form
                 onSubmit={formik.handleSubmit}
                 style={{
@@ -82,8 +83,6 @@ const Login = () => {
                   width: "350px",
                 }}
               >
-                {isPending && <LinearProgress />}
-
                 <Typography variant="h3">Login</Typography>
                 <FormControl>
                   <TextField

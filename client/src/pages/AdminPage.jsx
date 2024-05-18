@@ -19,6 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { $axios } from "../axios/axiosInstance";
 import { fallBackImage } from "../constants/general.constants";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const AdminPage = () => {
 
   const movieDetail = data?.data?.movieDetail;
   if (isPending) {
-    return <CircularProgress />;
+    return <Loader />;
   }
   return (
     <Box

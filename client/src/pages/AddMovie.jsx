@@ -25,6 +25,7 @@ import {
   openErrorSnackbar,
   openSuccessSnackbar,
 } from "../store/slices/snackbarSlice";
+import Loader from "../components/Loader";
 
 const AddMovie = () => {
   const [movieImage, setmovieImage] = useState(null);
@@ -53,7 +54,7 @@ const AddMovie = () => {
     },
   });
   if (isPending || imageUploadLoading) {
-    return <CircularProgress />;
+    return <Loader />;
   }
 
   return (

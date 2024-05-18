@@ -14,6 +14,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { $axios } from "../axios/axiosInstance";
+import Loader from "../components/Loader";
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [error, seterror] = useState(null);
@@ -74,7 +75,7 @@ const AdminLogin = () => {
                   width: "350px",
                 }}
               >
-                {isPending && <LinearProgress />}
+                {isPending && <Loader />}
 
                 <Typography variant="h3">Admin Login</Typography>
                 <FormControl>

@@ -4,6 +4,7 @@ import React from "react";
 import { $axios } from "../axios/axiosInstance";
 import MovieCard from "../components/MovieCard";
 import { fallBackImage } from "../constants/general.constants";
+import Loader from "../components/Loader";
 
 const HomePage = () => {
   const { isPending, data } = useQuery({
@@ -15,7 +16,7 @@ const HomePage = () => {
 
   const movieDetail = data?.data?.movieDetail;
   if (isPending) {
-    return <CircularProgress />;
+    return <Loader />;
   }
   return (
     <>

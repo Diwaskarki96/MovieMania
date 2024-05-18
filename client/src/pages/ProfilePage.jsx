@@ -12,6 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { $axios } from "../axios/axiosInstance";
+import Loader from "../components/Loader";
 
 const ProfilePage = () => {
   const params = useParams();
@@ -32,7 +33,7 @@ const ProfilePage = () => {
     },
   });
   if (isPending) {
-    return <CircularProgress />;
+    return <Loader />;
   }
   return (
     <Box

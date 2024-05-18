@@ -6,7 +6,6 @@ import {
   Button,
   FormControl,
   FormHelperText,
-  LinearProgress,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,6 +18,7 @@ import {
   openErrorSnackbar,
   openSuccessSnackbar,
 } from "../store/slices/snackbarSlice";
+import Loader from "../components/Loader";
 
 const Registration = () => {
   const nagivate = useNavigate();
@@ -71,7 +71,7 @@ const Registration = () => {
                   width: "350px",
                 }}
               >
-                {isPending && <LinearProgress />}
+                {isPending && <Loader />}
                 <Typography variant="h3">Register</Typography>
                 <FormControl>
                   <TextField
