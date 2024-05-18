@@ -1,3 +1,4 @@
+import AuthGuard from "../guard/AuthGuard";
 import MainLayout from "../layout/MainLayout";
 import AboutUsPage from "../pages/AboutUsPage";
 import AddMovie from "../pages/AddMovie";
@@ -10,7 +11,11 @@ import ProfilePage from "../pages/ProfilePage";
 export const mainRoutes = [
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <AuthGuard>
+        <MainLayout />
+      </AuthGuard>
+    ),
     children: [
       {
         path: "home",
