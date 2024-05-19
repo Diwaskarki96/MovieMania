@@ -33,8 +33,8 @@ const AddMovie = () => {
   const [imageUploadLoading, setimageUploadLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const cloudName = "duypzorwt";
-  const uploadPreset = "MovieMania";
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   const navigate = useNavigate();
 

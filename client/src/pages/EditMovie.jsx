@@ -80,8 +80,9 @@ const EditMovie = () => {
           onSubmit={async (values) => {
             let imageUrl = null;
             if (movieImage) {
-              const cloudName = "duypzorwt";
-              const uploadPreset = "MovieMania";
+              const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+              const uploadPreset = import.meta.env
+                .VITE_CLOUDINARY_UPLOAD_PRESET;
               const data = new FormData();
               data.append("file", movieImage);
               data.append("cloud_name", cloudName);
