@@ -8,11 +8,7 @@ import Registration from "../pages/Registration";
 export const guestRoutes = [
   {
     path: "/",
-    element: (
-      <GuestGuard>
-        <GuestLayout />
-      </GuestGuard>
-    ),
+    element: <GuestLayout />,
     children: [
       {
         path: "/",

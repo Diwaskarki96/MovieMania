@@ -11,11 +11,7 @@ import ProfilePage from "../pages/ProfilePage";
 export const mainRoutes = [
   {
     path: "/",
-    element: (
-      <AuthGuard>
-        <MainLayout />
-      </AuthGuard>
-    ),
+    element: <MainLayout />,
     children: [
       {
         path: "home",
