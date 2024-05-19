@@ -42,7 +42,6 @@ const EditMovie = () => {
     },
   });
   const movieDetail = data?.data?.movieDetail;
-  console.log(movieDetail);
   const { isPending: editPending, mutate } = useMutation({
     mutationKey: ["edit-movie"],
     mutationFn: async (values) => {
