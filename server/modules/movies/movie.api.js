@@ -30,8 +30,11 @@ router.post("/list/user", async (req, res, next) => {
   try {
     const { page, limit } = req.body;
     const skip = (page - 1) * limit;
+    let match = {};
     const movies = await movieModel.aggregate([
-      { $match: {} },
+      { $match: match },
+      { $skip: skip },
+      { $limit: limit },
 
       {
         $project: {
@@ -46,9 +49,9 @@ router.post("/list/user", async (req, res, next) => {
         },
       },
     ]);
-    const totalMovie = await movieController.findAll().countDocuments();
-    const totalPage = totalMovie / limit;
-    res.json({ msg: "success", movieDetail: movies });
+    const totalMovie = await movieModel.find(match).countDocuments();
+    const totalPage = Math.ceil(totalMovie / limit);
+    res.json({ msg: "success", movieDetail: movies, totalPage });
   } catch (e) {
     next(e);
   }
@@ -96,5 +99,5 @@ router.delete("/delete/:id", async (req, res, next) => {
     next(e);
   }
 });
-// TODO:pagination,search,protective route ,filter
+// TODO:,search,filter,proper admin,confirm password (while changing password)
 module.exports = router;
