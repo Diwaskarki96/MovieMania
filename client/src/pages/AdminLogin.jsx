@@ -15,15 +15,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { $axios } from "../axios/axiosInstance";
 import Loader from "../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  openErrorSnackbar,
+  openSuccessSnackbar,
+} from "../store/slices/snackbarSlice";
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const [error, seterror] = useState(null);
+  const dispatch = useDispatch();
   const { isPending, mutate } = useMutation({
     mutationKey: ["Login-user"],
     mutationFn: async (values) => {
       return await $axios.post("/user/admin/login", values);
     },
     onSuccess: (res) => {
+      dispatch(openSuccessSnackbar(res?.data?.msg));
       navigate("/admin/home");
       //const firstName = res?.data?.data?.firstName;
       const token = res?.data?.token;
@@ -33,7 +39,7 @@ const AdminLogin = () => {
       localStorage.setItem("token", token);
     },
     onError: (error) => {
-      seterror(error.response.data.msg);
+      dispatch(openErrorSnackbar(error.response.data.msg));
     },
   });
   return (
@@ -58,12 +64,6 @@ const AdminLogin = () => {
         {(formik) => {
           return (
             <div>
-              {error && (
-                <Alert sx={{ marginBottom: "2rem" }} severity="error">
-                  {error}
-                </Alert>
-              )}
-
               <form
                 onSubmit={formik.handleSubmit}
                 style={{
