@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grid,
@@ -13,6 +13,7 @@ import {
   OutlinedInput,
   InputAdornment,
   Button,
+  Pagination,
 } from "@mui/material";
 import MovieCard from "../components/MovieCard";
 import { useQuery } from "@tanstack/react-query";
@@ -22,14 +23,20 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 
 const AdminPage = () => {
+  const [currentPage, setcurrentPage] = useState(1);
+
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const { isPending, data } = useQuery({
-    queryKey: ["get-all-movies"],
+    queryKey: ["get-all-movies", currentPage],
     queryFn: async () => {
-      return await $axios.post("/movie/list/user");
+      return await $axios.post("/movie/list/user", {
+        page: currentPage,
+        limit: 6,
+      });
     },
   });
+  const totalPage = data?.data?.totalPage;
 
   const movieDetail = data?.data?.movieDetail;
   if (isPending) {
@@ -74,6 +81,15 @@ const AdminPage = () => {
           <img src={fallBackImage} alt="" />
         )}
       </Box>
+      <Pagination
+        sx={{ margin: "2rem" }}
+        page={currentPage}
+        count={totalPage}
+        color="primary"
+        onChange={(_, value) => {
+          setcurrentPage(value);
+        }}
+      />
     </Box>
   );
 };
