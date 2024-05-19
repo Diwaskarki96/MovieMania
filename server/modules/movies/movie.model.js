@@ -23,7 +23,7 @@ const movieSchema = new mongoose.Schema(
     description: { type: String, required: true, min: 5, maxlength: 1000 },
     image: { type: String, required: false, default: null },
     releaseDate: { type: Number, required: false },
-    trailer: { type: String, required: true },
+    trailer: { type: String },
     role: {
       type: String,
       enum: ["user", "admin"],

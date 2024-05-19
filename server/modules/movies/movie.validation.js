@@ -31,7 +31,7 @@ const movieValidationSchema = Yup.object().shape({
     .max(1000, "Description must be under 1000 characters"),
   image: Yup.string().nullable(),
   releaseDate: Yup.number().nullable(),
-  trailer: Yup.string().required("Trailer link is required"),
+  trailer: Yup.string().nullable(),
   role: Yup.string()
     .oneOf(["user", "admin"], "Role must be user or admin")
     .default("user"),
