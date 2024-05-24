@@ -7,7 +7,9 @@ import {
   CircularProgress,
   FormControl,
   FormHelperText,
+  Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -18,10 +20,18 @@ const ProfilePage = () => {
   const params = useParams();
   const userId = params.id;
   const navigate = useNavigate();
-
+  const [profileImage, setprofileImage] = useState(null);
+  const [localUrl, setlocalUrl] = useState(null);
+  const [imageLoading, setimageLoading] = useState(false);
   const firstName = localStorage.getItem("firstName");
   const lastName = localStorage.getItem("lastName");
   const queryClient = useQueryClient();
+  useQuery({
+    queryKey: ["user-details"],
+    queryFn: async () => {
+      //  return $axios.get
+    },
+  });
   const { isPending, mutate } = useMutation({
     mutationKey: ["edit-profile"],
     mutationFn: async (values) => {
@@ -70,6 +80,12 @@ const ProfilePage = () => {
                 width: "350px",
               }}
             >
+              <Typography variant="h4" sx={{ marginLeft: "5rem" }}>
+                Edit Profile
+              </Typography>
+              <Stack sx={{ height: "250px" }}>
+                <img src="" alt="" height="100%" />
+              </Stack>
               <FormControl>
                 <TextField
                   label="First Name"
