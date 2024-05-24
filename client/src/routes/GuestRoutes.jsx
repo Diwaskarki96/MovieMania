@@ -8,7 +8,11 @@ import Registration from "../pages/Registration";
 export const guestRoutes = [
   {
     path: "/",
-    element: <GuestLayout />,
+    element: (
+      <GuestGuard>
+        <GuestLayout />
+      </GuestGuard>
+    ),
     children: [
       {
         path: "/",
@@ -21,10 +25,6 @@ export const guestRoutes = [
       {
         path: "register",
         element: <Registration />,
-      },
-      {
-        path: "admin",
-        element: <AdminLogin />,
       },
     ],
   },

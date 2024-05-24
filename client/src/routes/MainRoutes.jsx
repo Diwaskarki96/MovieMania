@@ -11,7 +11,11 @@ import ProfilePage from "../pages/ProfilePage";
 export const mainRoutes = [
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <AuthGuard>
+        <MainLayout />
+      </AuthGuard>
+    ),
     children: [
       {
         path: "home",
@@ -21,22 +25,12 @@ export const mainRoutes = [
         path: "movie-detail/:id",
         element: <MovieDetail />,
       },
-      {
-        path: "add-movie",
-        element: <AddMovie />,
-      },
-      {
-        path: "admin/home",
-        element: <AdminPage />,
-      },
+
       {
         path: "profile/:id",
         element: <ProfilePage />,
       },
-      {
-        path: "movie-edit/:id",
-        element: <EditMovie />,
-      },
+
       {
         path: "about-us",
         element: <AboutUsPage />,
