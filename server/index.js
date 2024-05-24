@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const userRouter = require("./modules/users/user.api");
 const movieRouter = require("./modules/movies/movie.api");
+const adminRouter = require("./modules/Admin/admin.api");
 const { errorHandler } = require("./middleware/errorHandler");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/user", userRouter);
 app.use("/movie", movieRouter);
+app.use("/admin", adminRouter);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

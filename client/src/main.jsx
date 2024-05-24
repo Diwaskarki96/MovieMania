@@ -11,10 +11,15 @@ import { guestRoutes } from "./routes/GuestRoutes.jsx";
 import { mainRoutes } from "./routes/MainRoutes.jsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.js";
+import { AdminRoute } from "./routes/AdminRoutes.jsx";
 
 const queryClient = new QueryClient();
 
-const router = createBrowserRouter([...guestRoutes, ...mainRoutes]);
+const router = createBrowserRouter([
+  ...guestRoutes,
+  ...mainRoutes,
+  ...AdminRoute,
+]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>

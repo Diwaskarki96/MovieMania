@@ -26,7 +26,7 @@ const AdminLogin = () => {
   const { isPending, mutate } = useMutation({
     mutationKey: ["Login-user"],
     mutationFn: async (values) => {
-      return await $axios.post("/user/admin/login", values);
+      return await $axios.post("/admin/login", values);
     },
     onSuccess: (res) => {
       dispatch(openSuccessSnackbar(res?.data?.msg));
