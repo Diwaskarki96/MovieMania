@@ -28,6 +28,7 @@ const Login = () => {
       return await $axios.post("/user/login", values);
     },
     onSuccess: (res) => {
+      console.log(res);
       navigate("/home");
       dispatch(openSuccessSnackbar(res?.data?.msg));
       const firstName = res?.data?.data?.firstName;

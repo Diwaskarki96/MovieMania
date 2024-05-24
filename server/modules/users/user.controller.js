@@ -16,4 +16,8 @@ const login = async ({ email, password }) => {
   return user;
 };
 const editProfile = async () => {};
-module.exports = { login, register, findByEmail };
+
+const findById = async ({ id }) => {
+  return await userModel.findById({ _id: id });
+};
+module.exports = { login, register, findByEmail, findById };

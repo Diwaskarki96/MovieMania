@@ -13,5 +13,6 @@ export const editProfileValidation = Yup.object({
     .max(15, "Last Name must be under 15 charcters")
     .trim()
     .lowercase(),
+  profilePicture: Yup.string().nullable(),
   password: Yup.string().required("Password is required"),
 });

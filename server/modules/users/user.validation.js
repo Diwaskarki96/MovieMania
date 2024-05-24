@@ -54,5 +54,6 @@ exports.editProfileValidation = YUP.object({
     .max(15, "Last Name must be under 15 charcters")
     .trim()
     .lowercase(),
+  profilePicture: YUP.string().nullable(),
   password: YUP.string().required("Password is required"),
 });

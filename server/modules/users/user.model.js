@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("../movies/movie.validation");
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -36,6 +37,7 @@ const userSchema = new mongoose.Schema({
     default: "user",
     required: "true",
   },
+  profilePicture: { type: String },
 });
 
 const userModel = mongoose.model("User", userSchema);

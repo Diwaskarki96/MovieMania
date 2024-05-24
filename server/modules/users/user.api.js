@@ -45,27 +45,27 @@ router.post("/login", async (req, res, next) => {
     next(e);
   }
 });
-
-router.post("/admin/login", async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    // Retrieve admin credentials from environment variables
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
-    // Validate admin credentials
-    if (email !== adminEmail || password !== adminPassword) {
-      throw new Error("Invalid admin credentials");
-    }
-    // Generate admin token
-    const token = jwt.sign({ email, role: "admin" }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    res.json({ msg: "Admin login successful", role: "admin", token });
-  } catch (e) {
-    next(e);
-  }
-});
-
+//-----------admin login------------//
+// router.post("/admin/login", async (req, res, next) => {
+//   try {
+//     const { email, password } = req.body;
+//     // Retrieve admin credentials from environment variables
+//     const adminEmail = process.env.ADMIN_EMAIL;
+//     const adminPassword = process.env.ADMIN_PASSWORD;
+//     // Validate admin credentials
+//     if (email !== adminEmail || password !== adminPassword) {
+//       throw new Error("Invalid admin credentials");
+//     }
+//     // Generate admin token
+//     const token = jwt.sign({ email, role: "admin" }, process.env.JWT_SECRET, {
+//       expiresIn: "1h",
+//     });
+//     res.json({ msg: "Admin login successful", role: "admin", token });
+//   } catch (e) {
+//     next(e);
+//   }
+// });
+//----------------edit user profile----------------//
 router.put(
   "/editProfile/:id",
   async (req, res, next) => {
@@ -110,4 +110,33 @@ router.put(
   }
 );
 
+//--------find user by id-----------//
+router.post(
+  "/user-detail/:id",
+  async (req, res, next) => {
+    try {
+      const authorization = req.headers.authorization;
+      const splittedValue = authorization?.split(" ");
+      const token = splittedValue?.length === 2 ? splittedValue[1] : undefined;
+      if (!token) throw new Error("Unauthorized");
+      const payload = jwt.verify(token, "shhhhh");
+      const user = await userController.findByEmail({ email: payload.email });
+      if (!user) throw new Error("User not found");
+      if (user.role !== "user") throw new Error("Unauthorized");
+      req.loggedInId = user?._id;
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  async (req, res, next) => {
+    try {
+      const user = await userController.findById({ id: req.loggedInId });
+      res.json({ msg: "Success", data: user });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
 module.exports = router;
