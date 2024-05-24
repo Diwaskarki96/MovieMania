@@ -1,3 +1,4 @@
+import AdminAuthGuard from "../guard/AdminAuthGuard";
 import AdminLayout from "../layout/AdminLayout";
 import AddMovie from "../pages/AddMovie";
 import AdminLogin from "../pages/AdminLogin";
@@ -7,7 +8,11 @@ import EditMovie from "../pages/EditMovie";
 export const AdminRoute = [
   {
     path: "/",
-    element: <AdminLayout />,
+    element: (
+      <AdminAuthGuard>
+        <AdminLayout />
+      </AdminAuthGuard>
+    ),
     children: [
       {
         path: "admin/home",

@@ -33,10 +33,10 @@ const AdminLogin = () => {
       navigate("/admin/home");
       //const firstName = res?.data?.data?.firstName;
       const token = res?.data?.token;
-      const role = res?.data?.role;
+      const role = res?.data?.data?.role;
 
       localStorage.setItem("role", role);
-      localStorage.setItem("token", token);
+      localStorage.setItem("accessToken", token);
     },
     onError: (error) => {
       dispatch(openErrorSnackbar(error.response.data.msg));
