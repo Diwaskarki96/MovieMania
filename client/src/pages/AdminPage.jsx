@@ -22,24 +22,35 @@ import { $axios } from "../axios/axiosInstance";
 import { fallBackImage } from "../constants/general.constants";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
+import { debounce } from "lodash";
+import SearchIcon from "@mui/icons-material/Search";
 
 const AdminPage = () => {
+  const [searchText, setsearchText] = useState("");
+
   const [currentPage, setcurrentPage] = useState(1);
 
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const { isPending, data } = useQuery({
-    queryKey: ["get-all-movies", currentPage],
+    queryKey: ["get-all-movies", currentPage, searchText],
     queryFn: async () => {
       return await $axios.post("/movie/list/user", {
         page: currentPage,
         limit: 6,
+        searchText: searchText || null,
       });
     },
   });
   const totalPage = data?.data?.totalPage;
 
   const movieDetail = data?.data?.movieDetail;
+  const updateSearchText = (text) => {
+    setsearchText(text);
+    setcurrentPage(1);
+  };
+  //delay for user to write in search bar
+  const delayedUpdateSearchText = debounce(updateSearchText, 1000);
   if (isPending) {
     return <Loader />;
   }
@@ -53,11 +64,30 @@ const AdminPage = () => {
         mt: "1rem",
       }}
     >
-      <Box display="flex" gap="2rem">
-        <TextField placeholder="Search Movies" variant="outlined" />
+      <Box
+        display="flex"
+        gap="2rem"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <FormControl variant="standard">
+          <OutlinedInput
+            placeholder="Search Movies here..."
+            onChange={(event) => {
+              //setsearchText(event?.target?.value);
+              delayedUpdateSearchText(event?.target?.value);
+            }}
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "#1976D2", fontSize: "2rem" }} />
+              </InputAdornment>
+            }
+          />
+        </FormControl>
         {role === "admin" && (
           <Button
             variant="contained"
+            sx={{ height: "3rem" }}
             onClick={() => {
               navigate("/admin/add-movie");
             }}
