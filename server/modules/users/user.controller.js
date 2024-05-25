@@ -20,4 +20,19 @@ const editProfile = async () => {};
 const findById = async ({ id }) => {
   return await userModel.findById({ _id: id });
 };
-module.exports = { login, register, findByEmail, findById };
+const changePassword = async (id, oldPassword, newPassword) => {
+  const user = await userModel.findById(id);
+  if (!user) throw new Error("User not found");
+
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatch) throw new Error("Incorrect Password");
+
+  const hashedNewPassword = await bcrypt.hash(
+    newPassword,
+    +process.env.SALT_ROUNDS || 10
+  );
+  user.password = hashedNewPassword;
+  await user.save();
+  return user;
+};
+module.exports = { login, register, findByEmail, findById, changePassword };
