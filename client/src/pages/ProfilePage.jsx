@@ -1,131 +1,264 @@
 import { Formik } from "formik";
-import { useState } from "react";
-import { editProfileValidation } from "../validation/editProfileValidationSchema";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
-  CircularProgress,
   FormControl,
   FormHelperText,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  changePasswordValidation,
+  editProfileValidation,
+} from "../validation/editProfileValidationSchema";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { $axios } from "../axios/axiosInstance";
 import Loader from "../components/Loader";
+import { useDispatch } from "react-redux";
+import {
+  openErrorSnackbar,
+  openSuccessSnackbar,
+} from "../store/slices/snackbarSlice";
+import axios from "axios";
+import { fallBackImage } from "../constants/general.constants";
 
 const ProfilePage = () => {
+  const [userImage, setuserImage] = useState(null);
+  const [localUrl, setlocalUrl] = useState("");
+  const [imageLoadLoading, setimageLoadLoading] = useState(false);
   const params = useParams();
   const userId = params.id;
   const navigate = useNavigate();
-  const [profileImage, setprofileImage] = useState(null);
-  const [localUrl, setlocalUrl] = useState(null);
-  const [imageLoading, setimageLoading] = useState(false);
-  const firstName = localStorage.getItem("firstName");
-  const lastName = localStorage.getItem("lastName");
+  const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  useQuery({
-    queryKey: ["user-details"],
-    queryFn: async () => {
-      //  return $axios.get
+  const { isPending: getUserDetailPending, data } = useQuery({
+    queryKey: ["get-user-details"],
+    queryFn: () => {
+      return $axios.post(`/user/user-detail/${userId}`);
     },
   });
-  const { isPending, mutate } = useMutation({
-    mutationKey: ["edit-profile"],
-    mutationFn: async (values) => {
-      return await $axios.put(`/user/editProfile/${userId}`, values);
-    },
-    onSuccess: async (data) => {
-      queryClient.invalidateQueries("Login-user");
-      navigate("/home");
-    },
-  });
-  if (isPending) {
+  const { isPending: editProfilePending, mutate: editProfileMutate } =
+    useMutation({
+      mutationKey: ["edit-profile"],
+      mutationFn: (values) => {
+        return $axios.put(`/user/editProfile/${userId}`, values);
+      },
+      onSuccess: (res) => {
+        dispatch(openSuccessSnackbar(res?.data?.message));
+        queryClient.invalidateQueries("Login-user");
+      },
+      onError: (error) => {
+        dispatch(openErrorSnackbar(error?.response?.data?.message));
+      },
+    });
+  const { isPending: changePasswordPending, mutate: changePasswordMutate } =
+    useMutation({
+      mutationKey: ["changePassword"],
+      mutationFn: (values) => {
+        return $axios.put(`/user/changePassword/${userId}`, {
+          oldPassword: values.oldPassword,
+          newPassword: values.newPassword,
+        });
+      },
+      onSuccess: (res) => {
+        dispatch(openSuccessSnackbar(res?.data?.message));
+      },
+      onError: (error) => {
+        dispatch(openErrorSnackbar(error?.response?.data?.message));
+      },
+    });
+  const userDetails = data?.data?.data;
+  const firstName = userDetails?.firstName;
+  const lastName = userDetails?.lastName;
+  const profilePicture = userDetails?.profilePicture;
+  console.log(profilePicture);
+  if (
+    getUserDetailPending ||
+    editProfilePending ||
+    changePasswordPending ||
+    imageLoadLoading
+  ) {
     return <Loader />;
   }
   return (
     <Box
       sx={{
         display: "flex",
-        height: "60vh",
-        //flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Formik
-        initialValues={{
-          firstName: firstName,
-          lastName: lastName,
-          password: "",
-        }}
-        validationSchema={editProfileValidation}
-        onSubmit={(values) => {
-          mutate(values);
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        {(formik) => {
-          return (
-            <form
-              onSubmit={formik.handleSubmit}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                margin: "20px",
-                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-                padding: "1rem",
-                gap: "1rem",
-                width: "350px",
-              }}
-            >
-              <Typography variant="h4" sx={{ marginLeft: "5rem" }}>
-                Edit Profile
-              </Typography>
-              <Stack sx={{ height: "250px" }}>
-                <img src="" alt="" height="100%" />
-              </Stack>
-              <FormControl>
-                <TextField
-                  label="First Name"
-                  {...formik.getFieldProps("firstName")}
-                />
-                {formik.touched.firstName && formik.errors.firstName ? (
-                  <FormHelperText error>
-                    {formik.errors.firstName}
-                  </FormHelperText>
-                ) : null}
-              </FormControl>
-              <FormControl>
-                <TextField
-                  label="Last Name"
-                  {...formik.getFieldProps("lastName")}
-                />
-                {formik.touched.lastName && formik.errors.lastName ? (
-                  <FormHelperText error>
-                    {formik.errors.lastName}
-                  </FormHelperText>
-                ) : null}
-              </FormControl>
-              <FormControl>
-                <TextField
-                  label="Password"
-                  {...formik.getFieldProps("password")}
-                />
-                {formik.touched.password && formik.errors.password ? (
-                  <FormHelperText error>
-                    {formik.errors.password}
-                  </FormHelperText>
-                ) : null}
-              </FormControl>
-              <Button variant="contained" type="submit">
-                Submit
-              </Button>
-            </form>
-          );
-        }}
-      </Formik>
+        <Formik
+          initialValues={{
+            profilePicture: profilePicture || null,
+            firstName: firstName || "",
+            lastName: lastName || "",
+          }}
+          enableReinitialize={true}
+          validationSchema={editProfileValidation}
+          onSubmit={async (values) => {
+            let imageUrl = null;
+            if (userImage) {
+              const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+              const uploadPreset = import.meta.env
+                .VITE_CLOUDINARY_UPLOAD_PRESET;
+              const data = new FormData();
+              data.append("file", userImage);
+              data.append("cloud_name", cloudName);
+              data.append("upload_preset", uploadPreset);
+              try {
+                setimageLoadLoading(true);
+                const response = await axios.post(
+                  `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                  data
+                );
+
+                setimageLoadLoading(false);
+                imageUrl = response?.data?.secure_url;
+              } catch (error) {
+                setimageLoadLoading(false);
+                console.error(error.message);
+              }
+            }
+            values.profilePicture = imageUrl;
+            editProfileMutate(values);
+          }}
+        >
+          {(formik) => {
+            return (
+              <form
+                onSubmit={formik.handleSubmit}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "20px",
+                  boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+                  padding: "1rem",
+                  gap: "1rem",
+                  width: "350px",
+                }}
+              >
+                <Typography variant="h4" sx={{ marginLeft: "5rem" }}>
+                  Edit Profile
+                </Typography>
+                <Stack sx={{ height: "350px" }}>
+                  <img
+                    src={localUrl || profilePicture || fallBackImage}
+                    alt=""
+                    height={"93%"}
+                  />
+                  <input
+                    type="file"
+                    onChange={(event) => {
+                      const file = event.target.files[0];
+                      setuserImage(file);
+                      setlocalUrl(URL.createObjectURL(file));
+                    }}
+                  />
+                </Stack>
+                <FormControl>
+                  <TextField
+                    label="First Name"
+                    {...formik.getFieldProps("firstName")}
+                  />
+                  {formik.touched.firstName && formik.errors.firstName ? (
+                    <FormHelperText error>
+                      {formik.errors.firstName}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl>
+                  <TextField
+                    label="Last Name"
+                    {...formik.getFieldProps("lastName")}
+                  />
+                  {formik.touched.lastName && formik.errors.lastName ? (
+                    <FormHelperText error>
+                      {formik.errors.lastName}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+
+                <Button variant="contained" type="submit">
+                  Submit
+                </Button>
+              </form>
+            );
+          }}
+        </Formik>
+        <Formik
+          initialValues={{
+            oldPassword: "",
+            newPassword: "",
+          }}
+          validationSchema={changePasswordValidation}
+          onSubmit={(values) => {
+            changePasswordMutate(values);
+          }}
+        >
+          {(formik) => {
+            return (
+              <form
+                onSubmit={formik.handleSubmit}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "20px",
+                  boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+                  padding: "1rem",
+                  gap: "1rem",
+                  width: "350px",
+                  marginTop: "16.5rem",
+                }}
+              >
+                <Typography variant="h4" sx={{ marginLeft: "2rem" }}>
+                  Change Password
+                </Typography>
+                <FormControl>
+                  <TextField
+                    label="Old Password"
+                    {...formik.getFieldProps("oldPassword")}
+                  />
+                  {formik.touched.oldPassword && formik.errors.oldPassword ? (
+                    <FormHelperText error>
+                      {formik.errors.oldPassword}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl>
+                  <TextField
+                    label="New Password"
+                    {...formik.getFieldProps("newPassword")}
+                  />
+                  {formik.touched.newPassword && formik.errors.newPassword ? (
+                    <FormHelperText error>
+                      {formik.errors.newPassword}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <Button variant="contained" type="submit">
+                  Change Password
+                </Button>
+              </form>
+            );
+          }}
+        </Formik>
+      </Box>
     </Box>
   );
 };

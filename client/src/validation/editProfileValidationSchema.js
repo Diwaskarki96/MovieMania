@@ -14,5 +14,9 @@ export const editProfileValidation = Yup.object({
     .trim()
     .lowercase(),
   profilePicture: Yup.string().nullable(),
-  password: Yup.string().required("Password is required"),
+});
+
+export const changePasswordValidation = Yup.object({
+  oldPassword: Yup.string().required("Old Password is required"),
+  newPassword: Yup.string().required("New Password is required"),
 });

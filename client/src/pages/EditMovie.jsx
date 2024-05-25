@@ -42,6 +42,8 @@ const EditMovie = () => {
     },
   });
   const movieDetail = data?.data?.movieDetail;
+  const image = movieDetail?.image;
+  console.log(image);
   const { isPending: editPending, mutate } = useMutation({
     mutationKey: ["edit-movie"],
     mutationFn: async (values) => {
@@ -75,6 +77,7 @@ const EditMovie = () => {
             releaseDate: movieDetail?.releaseDate || "",
             trailer: movieDetail?.trailer || "",
           }}
+          enableReinitialize={true}
           validationSchema={movieValidationSchema}
           onSubmit={async (values) => {
             let imageUrl = null;
