@@ -14,6 +14,7 @@ import {
   InputAdornment,
   Button,
   Pagination,
+  TextField,
 } from "@mui/material";
 import MovieCard from "../components/MovieCard";
 import { useQuery } from "@tanstack/react-query";
@@ -52,17 +53,19 @@ const AdminPage = () => {
         mt: "1rem",
       }}
     >
-      {role === "admin" && (
-        <Button
-          variant="contained"
-          onClick={() => {
-            navigate("/add-movie");
-          }}
-        >
-          {" "}
-          Add movie{" "}
-        </Button>
-      )}
+      <Box display="flex" gap="2rem">
+        <TextField placeholder="Search Movies" variant="outlined" />
+        {role === "admin" && (
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigate("/admin/add-movie");
+            }}
+          >
+            Add movie
+          </Button>
+        )}
+      </Box>
       <Box
         sx={{
           display: "flex",

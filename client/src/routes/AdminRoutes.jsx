@@ -7,7 +7,7 @@ import EditMovie from "../pages/EditMovie";
 
 export const AdminRoute = [
   {
-    path: "/",
+    path: "/admin",
     element: (
       <AdminAuthGuard>
         <AdminLayout />
@@ -15,15 +15,15 @@ export const AdminRoute = [
     ),
     children: [
       {
-        path: "admin/home",
+        path: "home",
         element: <AdminPage />,
       },
       {
-        path: "admin/movie-edit/:id",
+        path: "movie-edit/:id",
         element: <EditMovie />,
       },
       {
-        path: "admin/add-movie",
+        path: "add-movie",
         element: <AddMovie />,
       },
     ],
