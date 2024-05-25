@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Container,
   Paper,
@@ -9,7 +10,7 @@ import {
   Chip,
   Stack,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { $axios } from "../axios/axiosInstance";
 import { fallBackImage } from "../constants/general.constants";
@@ -21,6 +22,7 @@ import Loader from "../components/Loader";
 
 const MovieDetail = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation;
   const params = useParams();
   const movieId = params.id;
   const userRole = localStorage.getItem("role");
@@ -84,7 +86,9 @@ const MovieDetail = () => {
                   color="success"
                   startIcon={<EditIcon />}
                   onClick={() => {
-                    navigate(`/movie-edit/${movieId}`);
+                    // navigate("https://gmail.com/");
+                    navigate(`/admin/movie-edit/${movieId}`);
+                    console.log(pathname);
                   }}
                   fullWidth
                 >
