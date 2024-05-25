@@ -3,7 +3,10 @@ const isValidMongoId = require("../../middleware/validateMongoID");
 const movieController = require("./movie.controller");
 const movieModel = require("./movie.model");
 
-const movieValidationSchema = require("./movie.validation");
+const {
+  movieValidationSchema,
+  paginationValidationSchema,
+} = require("./movie.validation");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -28,9 +31,13 @@ router.post("/add", async (req, res, next) => {
 
 router.post("/list/user", async (req, res, next) => {
   try {
-    const { page, limit } = req.body;
+    const validateDate = await paginationValidationSchema.validate(req.body);
+    const { page, limit, searchText } = validateDate;
     const skip = (page - 1) * limit;
     let match = {};
+    if (searchText) {
+      match = { title: { $regex: searchText, $options: "i" } };
+    }
     const movies = await movieModel.aggregate([
       { $match: match },
       { $skip: skip },
@@ -72,6 +79,8 @@ router.put("/edit/:id", isValidMongoId, async (req, res, next) => {
     const newData = req.body;
     const validateData = await movieValidationSchema.validate(newData);
     const movieId = req.params.id;
+    const movie = await movieController.findId({ id: movieId });
+    if (!movie) throw new Error("Movie Does't Exists");
     const role = validateData.role;
     if (role === "user") throw new Error("Admin is needed");
     const movieDetail = await movieController.updateById(
@@ -99,5 +108,5 @@ router.delete("/delete/:id", async (req, res, next) => {
     next(e);
   }
 });
-// TODO:,search,proper admin,confirm password (while changing password),docker,host
+// TODO:,proper admin,search,confirm password (while changing password),docker,host
 module.exports = router;

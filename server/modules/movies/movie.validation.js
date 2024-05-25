@@ -36,5 +36,12 @@ const movieValidationSchema = Yup.object().shape({
     .oneOf(["user", "admin"], "Role must be user or admin")
     .default("user"),
 });
+const paginationValidationSchema = Yup.object({
+  page: Yup.number().min(1, "Page must be min 1").required("Page is required"),
+  limit: Yup.number()
+    .min(1, "Limit must be min 1")
+    .required("Limit is required"),
+  searchText: Yup.string().nullable(),
+});
 
-module.exports = movieValidationSchema;
+module.exports = { movieValidationSchema, paginationValidationSchema };
