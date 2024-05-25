@@ -25,6 +25,7 @@ exports.registerValidationSchema = YUP.object({
     .oneOf(["user", "admin"], "Role must be user or admin")
     .default("user")
     .required("Role is required"),
+  profilePicture: YUP.string().nullable(),
 });
 
 exports.loginValidationSchema = YUP.object({
@@ -39,6 +40,7 @@ exports.loginValidationSchema = YUP.object({
   role: YUP.string()
     .oneOf(["user", "admin"], "Role must be user or admin")
     .default("user"),
+  profilePicture: YUP.string().nullable(),
 });
 
 exports.editProfileValidation = YUP.object({
@@ -55,5 +57,9 @@ exports.editProfileValidation = YUP.object({
     .trim()
     .lowercase(),
   profilePicture: YUP.string().nullable(),
-  password: YUP.string().required("Password is required"),
+});
+
+exports.changePasswordValidation = YUP.object({
+  oldPassword: YUP.string().required("Old Password is required"),
+  newPassword: YUP.string().required("New Password is required"),
 });
