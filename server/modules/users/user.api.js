@@ -3,11 +3,13 @@ const {
   registerValidationSchema,
   loginValidationSchema,
   editProfileValidation,
+  changePasswordValidation,
 } = require("./user.validation");
 const userController = require("./user.controller");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const userModel = require("./user.model");
+const isValidMongoId = require("../../middleware/validateMongoID");
 
 router.get("/", (req, res) => {
   res.json({ msg: "Api is working" });
@@ -65,7 +67,7 @@ router.post("/login", async (req, res, next) => {
 //     next(e);
 //   }
 // });
-//----------------edit user profile----------------//
+//----------------edit user profile(first name and last name)----------------//
 router.put(
   "/editProfile/:id",
   async (req, res, next) => {
@@ -89,17 +91,16 @@ router.put(
     try {
       const newData = req.body;
       const validateData = await editProfileValidation.validate(newData);
-      const { firstName, lastName, password } = validateData;
-      const hashedPassword = await bcrypt.hash(
-        password,
-        +process.env.SALT_ROUND
-      );
+      const { firstName, lastName } = validateData;
+      // const hashedPassword = await bcrypt.hash(
+      //   password,
+      //   +process.env.SALT_ROUND
+      // );
       const user = await userModel.findOneAndUpdate(
         req.loggedInId,
         {
           firstName,
           lastName,
-          password: hashedPassword,
         },
         { new: true }
       );
@@ -109,10 +110,47 @@ router.put(
     }
   }
 );
+//-----------change password---------//
+router.put(
+  "/changePassword/:id",
+  isValidMongoId,
+  async (req, res, next) => {
+    try {
+      const authorization = req.headers.authorization;
+      const splittedValue = authorization?.split(" ");
+      const token = splittedValue?.length === 2 ? splittedValue[1] : undefined;
+      if (!token) throw new Error("Unauthorized");
+      const payload = jwt.verify(token, "shhhhh");
+      const user = await userController.findByEmail({ email: payload.email });
+      if (!user) throw new Error("User not found");
+      if (user.role !== "user") throw new Error("Unauthorized");
+      req.loggedInId = user?._id;
 
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  async (req, res, next) => {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      const validateData = await changePasswordValidation.validate({
+        oldPassword,
+        newPassword,
+      });
+      const user = await userController.changePassword(
+        req.loggedInId,
+        oldPassword,
+        newPassword
+      );
+      res.json({ message: "Password is changed successfully", data: user });
+    } catch (error) {}
+  }
+);
 //--------find user by id-----------//
 router.post(
   "/user-detail/:id",
+  isValidMongoId,
   async (req, res, next) => {
     try {
       const authorization = req.headers.authorization;
@@ -133,6 +171,7 @@ router.post(
   async (req, res, next) => {
     try {
       const user = await userController.findById({ id: req.loggedInId });
+      if (!user) throw new Error("User not found");
       res.json({ msg: "Success", data: user });
     } catch (e) {
       next(e);
