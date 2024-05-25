@@ -108,5 +108,5 @@ router.delete("/delete/:id", async (req, res, next) => {
     next(e);
   }
 });
-// TODO:,proper admin,search,confirm password (while changing password),docker,host
+// TODO:,proper admin,confirm password (while changing password),docker,host
 module.exports = router;

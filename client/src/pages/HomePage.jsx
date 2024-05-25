@@ -17,6 +17,7 @@ import { fallBackImage } from "../constants/general.constants";
 import Loader from "../components/Loader";
 import SearchIcon from "@mui/icons-material/Search";
 import { debounce } from "lodash";
+
 const HomePage = () => {
   const [searchText, setsearchText] = useState("");
   const [currentPage, setcurrentPage] = useState(1);

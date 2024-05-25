@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 const AdminAuthGuard = (props) => {
   const isAdminLoggedIn = localStorage.getItem("accessToken");
   const role = localStorage.getItem("role");
-  console.log(role);
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAdminLoggedIn || role !== "admin") {
