@@ -22,7 +22,6 @@ import Loader from "../components/Loader";
 
 const MovieDetail = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation;
   const params = useParams();
   const movieId = params.id;
   const userRole = localStorage.getItem("role");
@@ -86,9 +85,8 @@ const MovieDetail = () => {
                   color="success"
                   startIcon={<EditIcon />}
                   onClick={() => {
-                    // navigate("https://gmail.com/");
+                    console.log(`Navigating to /admin/movie-edit/${movieId}`);
                     navigate(`/admin/movie-edit/${movieId}`);
-                    console.log(pathname);
                   }}
                   fullWidth
                 >
