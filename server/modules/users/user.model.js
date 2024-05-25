@@ -35,9 +35,9 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     trim: true,
     default: "user",
-    required: "true",
+    required: true,
   },
-  profilePicture: { type: String },
+  profilePicture: { type: String, require: false, default: null },
 });
 
 const userModel = mongoose.model("User", userSchema);
