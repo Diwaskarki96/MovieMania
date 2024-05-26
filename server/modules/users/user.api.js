@@ -91,7 +91,7 @@ router.put(
     try {
       const newData = req.body;
       const validateData = await editProfileValidation.validate(newData);
-      const { firstName, lastName } = validateData;
+      const { firstName, lastName, profilePicture } = validateData;
       // const hashedPassword = await bcrypt.hash(
       //   password,
       //   +process.env.SALT_ROUND
@@ -101,6 +101,7 @@ router.put(
         {
           firstName,
           lastName,
+          profilePicture,
         },
         { new: true }
       );
@@ -144,7 +145,9 @@ router.put(
         newPassword
       );
       res.json({ message: "Password is changed successfully", data: user });
-    } catch (error) {}
+    } catch (e) {
+      next(e);
+    }
   }
 );
 //--------find user by id-----------//

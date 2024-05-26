@@ -14,6 +14,7 @@ export default function Header() {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const userID = localStorage.getItem("userID");
+  const profilePicture = localStorage.getItem("profilePicture");
   return (
     <Box
       sx={{
@@ -38,7 +39,7 @@ export default function Header() {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, cursor: "pointer" }}
+            sx={{ flexGrow: 1, cursor: "pointer", width: "3rem" }}
             onClick={() => {
               navigate("/home");
             }}
@@ -61,8 +62,12 @@ export default function Header() {
                 }}
               >
                 <Avatar
+                  sx={{ objectFit: "cover" }}
                   alt="Profile"
-                  src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                  src={
+                    profilePicture ||
+                    "https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                  }
                 />
               </IconButton>
             </Tooltip>

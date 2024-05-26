@@ -52,8 +52,8 @@ const ProfilePage = () => {
         return $axios.put(`/user/editProfile/${userId}`, values);
       },
       onSuccess: (res) => {
-        dispatch(openSuccessSnackbar(res?.data?.message));
         queryClient.invalidateQueries("Login-user");
+        dispatch(openSuccessSnackbar(res?.data?.message));
       },
       onError: (error) => {
         dispatch(openErrorSnackbar(error?.response?.data?.message));
@@ -72,14 +72,13 @@ const ProfilePage = () => {
         dispatch(openSuccessSnackbar(res?.data?.message));
       },
       onError: (error) => {
-        dispatch(openErrorSnackbar(error?.response?.data?.message));
+        dispatch(openErrorSnackbar(error?.response?.data?.msg));
       },
     });
   const userDetails = data?.data?.data;
   const firstName = userDetails?.firstName;
   const lastName = userDetails?.lastName;
-  const profilePicture = userDetails?.profilePicture;
-  console.log(profilePicture);
+  // const profilePicture = userDetails?.profilePicture;
   if (
     getUserDetailPending ||
     editProfilePending ||
@@ -105,7 +104,7 @@ const ProfilePage = () => {
       >
         <Formik
           initialValues={{
-            profilePicture: profilePicture || null,
+            profilePicture: userDetails.profilePicture || null,
             firstName: firstName || "",
             lastName: lastName || "",
           }}
@@ -158,7 +157,9 @@ const ProfilePage = () => {
                 </Typography>
                 <Stack sx={{ height: "350px" }}>
                   <img
-                    src={localUrl || profilePicture || fallBackImage}
+                    src={
+                      localUrl || userDetails.profilePicture || fallBackImage
+                    }
                     alt=""
                     height={"93%"}
                   />

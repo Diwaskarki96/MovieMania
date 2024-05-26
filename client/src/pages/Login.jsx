@@ -33,7 +33,7 @@ const Login = () => {
       const firstName = res?.data?.data?.firstName;
       const lastName = res?.data?.data?.lastName;
       const accessToken = res?.data?.token;
-
+      const profilePicture = res?.data?.data?.profilePicture;
       const userID = res?.data?.data?._id;
 
       const role = res?.data?.data?.role;
@@ -44,6 +44,7 @@ const Login = () => {
 
       localStorage.setItem("role", role);
       localStorage.setItem("userID", userID);
+      localStorage.setItem("profilePicture", profilePicture);
     },
     onError: (error) => {
       dispatch(openErrorSnackbar(error?.response?.data?.msg));
