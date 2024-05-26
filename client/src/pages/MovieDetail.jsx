@@ -85,7 +85,6 @@ const MovieDetail = () => {
                   color="success"
                   startIcon={<EditIcon />}
                   onClick={() => {
-                    console.log(`Navigating to /admin/movie-edit/${movieId}`);
                     navigate(`/admin/movie-edit/${movieId}`);
                   }}
                   fullWidth

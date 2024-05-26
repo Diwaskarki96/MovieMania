@@ -17,7 +17,7 @@ export default function Header() {
   const userID = localStorage.getItem("userID");
   // const profilePicture = localStorage.getItem("profilePicture");
   const { profilePicture } = useSelector((state) => state.profilePicture);
-  console.log(profilePicture);
+  console.log({ profilePicture });
   return (
     <Box
       sx={{
