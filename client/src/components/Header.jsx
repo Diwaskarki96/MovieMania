@@ -8,13 +8,16 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const userID = localStorage.getItem("userID");
-  const profilePicture = localStorage.getItem("profilePicture");
+  // const profilePicture = localStorage.getItem("profilePicture");
+  const { profilePicture } = useSelector((state) => state.profilePicture);
+  console.log(profilePicture);
   return (
     <Box
       sx={{
@@ -41,7 +44,11 @@ export default function Header() {
             component="div"
             sx={{ flexGrow: 1, cursor: "pointer", width: "3rem" }}
             onClick={() => {
-              navigate("/home");
+              if (role === "user") {
+                navigate("/home");
+              } else if (role === "admin") {
+                navigate("/admin/home");
+              }
             }}
           >
             MovieMania

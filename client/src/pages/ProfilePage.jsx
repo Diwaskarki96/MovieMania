@@ -29,6 +29,7 @@ import {
 } from "../store/slices/snackbarSlice";
 import axios from "axios";
 import { fallBackImage } from "../constants/general.constants";
+import { setProfilePicture } from "../store/slices/profilePictureSlice";
 
 const ProfilePage = () => {
   const [userImage, setuserImage] = useState(null);
@@ -70,6 +71,7 @@ const ProfilePage = () => {
       },
       onSuccess: (res) => {
         dispatch(openSuccessSnackbar(res?.data?.message));
+        dispatch(setProfilePicture(res?.data?.profilePicture));
       },
       onError: (error) => {
         dispatch(openErrorSnackbar(error?.response?.data?.msg));
@@ -129,6 +131,7 @@ const ProfilePage = () => {
 
                 setimageLoadLoading(false);
                 imageUrl = response?.data?.secure_url;
+                dispatch(setProfilePicture(imageUrl));
               } catch (error) {
                 setimageLoadLoading(false);
                 console.error(error.message);
