@@ -19,6 +19,7 @@ export default function MovieCard({
   rating,
 }) {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
   return (
     <Card sx={{ height: "460px", width: "400px", padding: "0.5rem" }}>
       <CardActionArea>
@@ -30,7 +31,11 @@ export default function MovieCard({
           alt="green iguana"
           sx={{ objectFit: "cover" }}
           onClick={() => {
-            navigate(`/movie-detail/${_id}`);
+            if (role === "user") {
+              navigate(`/movie-detail/${_id}`);
+            } else if (role === "admin") {
+              navigate(`/admin/movieDetail/${_id}`);
+            }
           }}
         />
         <CardContent>
@@ -51,9 +56,13 @@ export default function MovieCard({
           variant="contained"
           color="primary"
           fullWidth
-          onClick={() => {
-            navigate(`/movie-detail/${_id}`);
-          }}
+          // onClick={() => {
+          //   if (role === "user") {
+          //     navigate(`/movie-detail/${_id}`);
+          //   } else if (role === "admin") {
+          //     navigate(`/admin/movieDetail/${_id}`);
+          //   }
+          // }}
         >
           See More
         </Button>
