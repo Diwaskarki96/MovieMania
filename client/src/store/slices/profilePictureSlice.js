@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+const initialProfilePicture = localStorage.getItem("profilePicture");
 export const profilePictureSlice = createSlice({
   name: "profilePicture",
   initialState: {
-    profilePicture: null,
+    profilePicture: initialProfilePicture || null,
   },
   reducers: {
     setProfilePicture: (state, action) => {
       state.profilePicture = action.payload;
+      localStorage.setItem("profilePicture", action.payload);
     },
   },
 });

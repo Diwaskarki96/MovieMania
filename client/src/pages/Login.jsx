@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { useState } from "react";
+import React, { useState } from "react";
 import { loginValidationSchema } from "../validation/loginValidationSchema";
 import {
   Alert,
@@ -7,6 +7,10 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,7 +23,17 @@ import {
   openSuccessSnackbar,
 } from "../store/slices/snackbarSlice";
 import Loader from "../components/Loader";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 const Login = () => {
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isPending, mutate } = useMutation({
@@ -95,11 +109,23 @@ const Login = () => {
                     <FormHelperText error>{formik.errors.email}</FormHelperText>
                   ) : null}
                 </FormControl>
-                <FormControl>
-                  <TextField
-                    label="Password"
+                <FormControl variant="outlined">
+                  <InputLabel label="password">Password</InputLabel>
+                  <OutlinedInput
                     {...formik.getFieldProps("password")}
-                    required
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
                   />
                   {formik.touched.password && formik.errors.password ? (
                     <FormHelperText error>

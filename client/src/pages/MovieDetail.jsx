@@ -73,36 +73,6 @@ const MovieDetail = () => {
               Rating:{movieDetail.rating}⭐
             </Typography>
             <TrailerDialog />
-            {userRole === "admin" && (
-              <Stack
-                direction="row"
-                spacing={2}
-                sx={{ width: "100%" }}
-                mt="1rem"
-              >
-                <Button
-                  variant="contained"
-                  color="success"
-                  startIcon={<EditIcon />}
-                  onClick={() => {
-                    navigate(`/admin/movie-edit/${movieId}`);
-                  }}
-                  fullWidth
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    popupAlert(movieId, navigate);
-                  }}
-                  fullWidth
-                >
-                  Delete
-                </Button>
-                {/* <DeleteMovieDialog /> */}
-              </Stack>
-            )}
           </Grid>
         </Grid>
       </Paper>

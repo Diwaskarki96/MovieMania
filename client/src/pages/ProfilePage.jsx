@@ -6,6 +6,10 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
   Stack,
   TextField,
   Typography,
@@ -30,11 +34,19 @@ import {
 import axios from "axios";
 import { fallBackImage } from "../constants/general.constants";
 import { setProfilePicture } from "../store/slices/profilePictureSlice";
-
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 const ProfilePage = () => {
   const [userImage, setuserImage] = useState(null);
   const [localUrl, setlocalUrl] = useState("");
   const [imageLoadLoading, setimageLoadLoading] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   const params = useParams();
   const userId = params.id;
   const navigate = useNavigate();
@@ -132,6 +144,7 @@ const ProfilePage = () => {
                 setimageLoadLoading(false);
                 imageUrl = response?.data?.secure_url;
                 dispatch(setProfilePicture(imageUrl));
+                localStorage.setItem("profilePicture", imageUrl);
               } catch (error) {
                 setimageLoadLoading(false);
                 console.error(error.message);
@@ -233,10 +246,23 @@ const ProfilePage = () => {
                 <Typography variant="h4" sx={{ marginLeft: "2rem" }}>
                   Change Password
                 </Typography>
-                <FormControl>
-                  <TextField
-                    label="Old Password"
+                <FormControl variant="outlined">
+                  <InputLabel label="old password">Old Password</InputLabel>
+                  <OutlinedInput
                     {...formik.getFieldProps("oldPassword")}
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Old Password"
                   />
                   {formik.touched.oldPassword && formik.errors.oldPassword ? (
                     <FormHelperText error>
@@ -244,10 +270,23 @@ const ProfilePage = () => {
                     </FormHelperText>
                   ) : null}
                 </FormControl>
-                <FormControl>
-                  <TextField
-                    label="New Password"
+                <FormControl variant="outlined">
+                  <InputLabel>New Password</InputLabel>
+                  <OutlinedInput
                     {...formik.getFieldProps("newPassword")}
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="New Password"
                   />
                   {formik.touched.newPassword && formik.errors.newPassword ? (
                     <FormHelperText error>
