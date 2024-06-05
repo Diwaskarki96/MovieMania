@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    container_name: mongo_c
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+  server:
+    build: ./server
+    container_name: server_c
+    ports:
+      - "8888:8888"
+    depends_on:
+      - mongo
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      DB_URL: "mongodb+srv://diwaskarki96:yokoso123@developmentcluster.uspjtgx.mongodb.net/IMDB?retryWrites=true&w=majority&appName=developmentCluster"
+volumes:
+  mongo-data:
+
+  client:
+    build: ./client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
