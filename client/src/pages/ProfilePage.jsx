@@ -145,12 +145,12 @@ const ProfilePage = () => {
                 imageUrl = response?.data?.secure_url;
                 dispatch(setProfilePicture(imageUrl));
                 localStorage.setItem("profilePicture", imageUrl);
+                values.profilePicture = imageUrl;
               } catch (error) {
                 setimageLoadLoading(false);
                 console.error(error.message);
               }
             }
-            values.profilePicture = imageUrl;
             editProfileMutate(values);
           }}
         >

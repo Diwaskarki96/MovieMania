@@ -97,13 +97,13 @@ const EditMovie = () => {
                 );
                 setimageLoadLoading(false);
                 imageUrl = response?.data?.secure_url;
+                values.image = imageUrl;
               } catch (error) {
                 setimageLoadLoading(false);
 
                 console.error(error.message);
               }
             }
-            values.image = imageUrl;
             mutate(values);
           }}
         >

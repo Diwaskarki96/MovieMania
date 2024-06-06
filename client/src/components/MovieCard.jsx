@@ -56,13 +56,13 @@ export default function MovieCard({
           variant="contained"
           color="primary"
           fullWidth
-          // onClick={() => {
-          //   if (role === "user") {
-          //     navigate(`/movie-detail/${_id}`);
-          //   } else if (role === "admin") {
-          //     navigate(`/admin/movieDetail/${_id}`);
-          //   }
-          // }}
+          onClick={() => {
+            if (role === "user") {
+              navigate(`/movie-detail/${_id}`);
+            } else if (role === "admin") {
+              navigate(`/admin/movieDetail/${_id}`);
+            }
+          }}
         >
           See More
         </Button>

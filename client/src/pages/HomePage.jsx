@@ -54,6 +54,7 @@ const HomePage = () => {
         <OutlinedInput
           sx={{ mt: "1rem" }}
           placeholder="Search Movies here..."
+          defaultValue={searchText || ""}
           onChange={(event) => {
             delayedUpdateSearchText(event?.target?.value);
           }}
