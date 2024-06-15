@@ -150,7 +150,7 @@ const Registration = () => {
                   color="secondary"
                   disabled={isPending}
                 >
-                  Login
+                  Register
                 </Button>
                 <Link to={"/login"}>Already registered? Login</Link>
               </form>

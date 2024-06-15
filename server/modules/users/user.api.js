@@ -67,7 +67,7 @@ router.post("/login", async (req, res, next) => {
 //     next(e);
 //   }
 // });
-//----------------edit user profile(first name and last name)----------------//
+//----------------edit user profile(first name, last name and profile picture )----------------//
 router.put(
   "/editProfile/:id",
   async (req, res, next) => {
@@ -76,7 +76,7 @@ router.put(
       const splittedValue = authorization?.split(" ");
       const token = splittedValue?.length === 2 ? splittedValue[1] : undefined;
       if (!token) throw new Error("Unauthorized");
-      const payload = jwt.verify(token, "shhhhh");
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
       const user = await userController.findByEmail({ email: payload.email });
       if (!user) throw new Error("User not found");
       if (user.role !== "user") throw new Error("Unauthorized");

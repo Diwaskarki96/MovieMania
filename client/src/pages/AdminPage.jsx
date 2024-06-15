@@ -73,6 +73,7 @@ const AdminPage = () => {
         <FormControl variant="standard">
           <OutlinedInput
             placeholder="Search Movies here..."
+            defaultValue={searchText || ""}
             onChange={(event) => {
               //setsearchText(event?.target?.value);
               delayedUpdateSearchText(event?.target?.value);

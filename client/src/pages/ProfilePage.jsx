@@ -65,7 +65,6 @@ const ProfilePage = () => {
         return $axios.put(`/user/editProfile/${userId}`, values);
       },
       onSuccess: (res) => {
-        queryClient.invalidateQueries("Login-user");
         dispatch(openSuccessSnackbar(res?.data?.message));
       },
       onError: (error) => {
@@ -125,7 +124,8 @@ const ProfilePage = () => {
           enableReinitialize={true}
           validationSchema={editProfileValidation}
           onSubmit={async (values) => {
-            let imageUrl = null;
+            let imageUrl = userDetails.profilePicture;
+            // let imageUrl = null;
             if (userImage) {
               const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
               const uploadPreset = import.meta.env
