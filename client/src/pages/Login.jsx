@@ -28,7 +28,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -64,6 +63,7 @@ const Login = () => {
       dispatch(openErrorSnackbar(error?.response?.data?.msg));
     },
   });
+
   return (
     <Box
       sx={{
