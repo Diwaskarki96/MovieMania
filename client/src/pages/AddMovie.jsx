@@ -99,158 +99,142 @@ const AddMovie = () => {
         >
           {(formik) => {
             return (
-              <Container
-                sx={{
-                  //   display: "flex",
-                  //   flexDirection: "column",
-                  //   justifyContent: "center",
-                  //   alignItems: "center",
-                  width: "60%",
-                  boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-                  gap: "2rem",
+              <form
+                onSubmit={formik.handleSubmit}
+                style={{
+                  margin: "3rem 0",
+                  width: "400px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "1rem",
+                  padding: "1rem",
                 }}
               >
-                <form
-                  onSubmit={formik.handleSubmit}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: "1rem",
-                    padding: "1rem",
-                  }}
-                >
-                  <Typography variant="h4">Add Movies</Typography>
-                  {localUrl && (
-                    <Stack sx={{ height: "350px" }}>
-                      <img src={localUrl} alt="" height={"100%"} />
-                    </Stack>
-                  )}
-                  <FormControl>
-                    <input
-                      type="file"
-                      onChange={(event) => {
-                        const file = event.target.files[0];
-                        setmovieImage(file);
-                        setlocalUrl(URL.createObjectURL(file));
-                      }}
-                    />
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      label="Title"
-                      {...formik.getFieldProps("title")}
-                      required
-                    />
+                <Typography variant="h4">Add Movies</Typography>
+                {localUrl && (
+                  <Stack sx={{ height: "350px" }}>
+                    <img src={localUrl} alt="" height={"100%"} />
+                  </Stack>
+                )}
+                <FormControl>
+                  <input
+                    type="file"
+                    onChange={(event) => {
+                      const file = event.target.files[0];
+                      setmovieImage(file);
+                      setlocalUrl(URL.createObjectURL(file));
+                    }}
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Title"
+                    {...formik.getFieldProps("title")}
+                    required
+                  />
 
-                    {formik.touched.title && formik.errors.title ? (
-                      <FormHelperText error>
-                        {formik.errors.title}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth required>
-                    <InputLabel>Genre</InputLabel>
-                    <Select label="genre" {...formik.getFieldProps("genre")}>
-                      {genre.map((item, index) => {
-                        return (
-                          <MenuItem key={index} value={item}>
-                            {item}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
+                  {formik.touched.title && formik.errors.title ? (
+                    <FormHelperText error>{formik.errors.title}</FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl fullWidth required>
+                  <InputLabel>Genre</InputLabel>
+                  <Select label="genre" {...formik.getFieldProps("genre")}>
+                    {genre.map((item, index) => {
+                      return (
+                        <MenuItem key={index} value={item}>
+                          {item}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
 
-                    {formik.touched.genre && formik.errors.genre ? (
-                      <FormHelperText error>
-                        {formik.errors.genre}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      label="Director"
-                      {...formik.getFieldProps("director")}
-                      required
-                    />
+                  {formik.touched.genre && formik.errors.genre ? (
+                    <FormHelperText error>{formik.errors.genre}</FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Director"
+                    {...formik.getFieldProps("director")}
+                    required
+                  />
 
-                    {formik.touched.director && formik.errors.director ? (
-                      <FormHelperText error>
-                        {formik.errors.director}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      label="Cast"
-                      {...formik.getFieldProps("cast")}
-                      required
-                    />
+                  {formik.touched.director && formik.errors.director ? (
+                    <FormHelperText error>
+                      {formik.errors.director}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Cast"
+                    {...formik.getFieldProps("cast")}
+                    required
+                  />
 
-                    {formik.touched.cast && formik.errors.cast ? (
-                      <FormHelperText error>
-                        {formik.errors.cast}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      label="Description"
-                      {...formik.getFieldProps("description")}
-                      required
-                    />
+                  {formik.touched.cast && formik.errors.cast ? (
+                    <FormHelperText error>{formik.errors.cast}</FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Description"
+                    {...formik.getFieldProps("description")}
+                    required
+                  />
 
-                    {formik.touched.description && formik.errors.description ? (
-                      <FormHelperText error>
-                        {formik.errors.description}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      label="Rating"
-                      {...formik.getFieldProps("rating")}
-                      required
-                    />
+                  {formik.touched.description && formik.errors.description ? (
+                    <FormHelperText error>
+                      {formik.errors.description}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Rating"
+                    {...formik.getFieldProps("rating")}
+                    required
+                  />
 
-                    {formik.touched.rating && formik.errors.rating ? (
-                      <FormHelperText error>
-                        {formik.errors.rating}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      label="Release Date"
-                      {...formik.getFieldProps("releaseDate")}
-                      // required
-                    />
+                  {formik.touched.rating && formik.errors.rating ? (
+                    <FormHelperText error>
+                      {formik.errors.rating}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Release Date"
+                    {...formik.getFieldProps("releaseDate")}
+                    // required
+                  />
 
-                    {formik.touched.releaseDate && formik.errors.releaseDate ? (
-                      <FormHelperText error>
-                        {formik.errors.releaseDate}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <TextField
-                      label="Trailer"
-                      {...formik.getFieldProps("trailer")}
-                      // required
-                    />
+                  {formik.touched.releaseDate && formik.errors.releaseDate ? (
+                    <FormHelperText error>
+                      {formik.errors.releaseDate}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Trailer"
+                    {...formik.getFieldProps("trailer")}
+                    // required
+                  />
 
-                    {formik.touched.trailer && formik.errors.trailer ? (
-                      <FormHelperText error>
-                        {formik.errors.trailer}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                  <Button variant="contained" type="submit">
-                    Submit
-                  </Button>
-                </form>
-              </Container>
+                  {formik.touched.trailer && formik.errors.trailer ? (
+                    <FormHelperText error>
+                      {formik.errors.trailer}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+                <Button variant="contained" type="submit">
+                  Submit
+                </Button>
+              </form>
             );
           }}
         </Formik>
