@@ -3,17 +3,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const AdminAuthGuard = (props) => {
   const isAdminLoggedIn = localStorage.getItem("accessToken");
-  const role = localStorage.getItem("role");
+  const isAdmin = localStorage.getItem("role") === "admin";
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isAdminLoggedIn || role !== "admin") {
+    if (!isAdminLoggedIn || !isAdmin) {
       navigate("/admin/login", { replace: true });
     }
-    if (isAdminLoggedIn && role === "admin") {
+    if (isAdminLoggedIn && isAdmin) {
       navigate("/admin/home", { replace: true });
     }
-  }, [isAdminLoggedIn, navigate, role]);
-  return <div>{isAdminLoggedIn && props.children}</div>;
+  }, [isAdminLoggedIn, navigate, isAdmin]);
+  return <div>{props.children}</div>;
 };
 
 export default AdminAuthGuard;
