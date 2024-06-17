@@ -19,7 +19,9 @@ app.use(cors());
 app.use("/user", userRouter);
 app.use("/movie", movieRouter);
 app.use("/admin", adminRouter);
-
+app.get("/", (req, res) => {
+  res.json({ msg: "Api is working" });
+});
 app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server running at port:${PORT}`);
