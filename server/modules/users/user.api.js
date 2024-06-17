@@ -11,9 +11,9 @@ const bcrypt = require("bcryptjs");
 const userModel = require("./user.model");
 const isValidMongoId = require("../../middleware/validateMongoID");
 
-router.get("/", (req, res) => {
-  res.json({ msg: "Api is working" });
-});
+// router.get("/", (req, res) => {
+//   res.json({ msg: "Api is working" });
+// });
 
 router.post("/register", async (req, res, next) => {
   try {
