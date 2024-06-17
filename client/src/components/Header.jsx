@@ -17,7 +17,6 @@ export default function Header() {
   const userID = localStorage.getItem("userID");
   // const profilePicture = localStorage.getItem("profilePicture");
   const { profilePicture } = useSelector((state) => state.profilePicture);
-  console.log({ profilePicture });
   return (
     <Box
       sx={{
@@ -60,6 +59,14 @@ export default function Header() {
             }}
           >
             Home
+          </Button>
+          <Button
+            color="inherit"
+            onClick={() => {
+              navigate("/about-me");
+            }}
+          >
+            About me
           </Button>
           {role === "user" && (
             <Tooltip title={"Profile"}>

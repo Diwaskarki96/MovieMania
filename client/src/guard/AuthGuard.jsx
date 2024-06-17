@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 const AuthGuard = (props) => {
   const isUserLoggedIn = localStorage.getItem("accessToken");
+  const isUser = localStorage.getItem("role") === "user";
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (!isUserLoggedIn) {
+    if (!isUserLoggedIn && !isUser) {
       navigate("/login", { replace: true });
     }
-  }, [isUserLoggedIn, navigate]);
-  return <div>{isUserLoggedIn && props.children}</div>;
+  }, [isUserLoggedIn, navigate, isUser]);
+
+  return <div>{isUserLoggedIn && isUser ? props.children : null}</div>;
 };
 
 export default AuthGuard;

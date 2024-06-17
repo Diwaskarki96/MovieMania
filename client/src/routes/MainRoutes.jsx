@@ -1,6 +1,6 @@
 import AuthGuard from "../guard/AuthGuard";
 import MainLayout from "../layout/MainLayout";
-import AboutUsPage from "../pages/AboutUsPage";
+import AboutMePage from "../pages/AboutMePage";
 import AddMovie from "../pages/AddMovie";
 import AdminPage from "../pages/AdminPage";
 import EditMovie from "../pages/EditMovie";
@@ -32,8 +32,8 @@ export const mainRoutes = [
       },
 
       {
-        path: "about-us",
-        element: <AboutUsPage />,
+        path: "about-me",
+        element: <AboutMePage />,
       },
     ],
   },
