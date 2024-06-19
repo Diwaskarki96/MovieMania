@@ -1,6 +1,6 @@
 import axios from "axios";
 export const $axios = axios.create({
-  baseURL: "https://moviemania-y345.onrender.com/",
+  baseURL: "https://movie-mania-api.vercel.app/",
   timeout: 5000,
 });
 //axios request interceptor
