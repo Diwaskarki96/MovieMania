@@ -1,6 +1,7 @@
 import axios from "axios";
 export const $axios = axios.create({
   baseURL: "https://movie-mania-api.vercel.app/",
+  timeout: 10000,
 });
 //axios request interceptor
 $axios.interceptors.request.use(function (config) {
