@@ -11,7 +11,7 @@ const MainLayout = () => {
     <div>
       <CustomSnackbar />
       <Header />
-      <App />
+
       <Stack sx={{ padding: "0 1rem", minHeight: "80vh" }}>
         <Outlet />
       </Stack>
