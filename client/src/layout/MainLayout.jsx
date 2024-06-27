@@ -4,12 +4,14 @@ import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 import CustomSnackbar from "../components/CustomSnackbar";
 import { Stack } from "@mui/material";
+import App from "../App";
 
 const MainLayout = () => {
   return (
     <div>
       <CustomSnackbar />
       <Header />
+      <App />
       <Stack sx={{ padding: "0 1rem", minHeight: "80vh" }}>
         <Outlet />
       </Stack>
