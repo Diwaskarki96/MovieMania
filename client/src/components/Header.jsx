@@ -24,14 +24,19 @@ export default function Header() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        width: "100%",
+        width: "100vw",
       }}
     >
       <AppBar position="static">
         <Toolbar>
           <Typography
             component="div"
-            sx={{ flexGrow: 1, cursor: "pointer" }}
+            sx={{
+              flexGrow: 1,
+              cursor: "pointer",
+              //bgcolor: "red",
+              // color: "red",
+            }}
             onClick={() => {
               if (role === "user") {
                 navigate("/home");
