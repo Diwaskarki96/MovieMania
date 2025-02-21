@@ -8,12 +8,14 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setProfilePicture } from "../store/slices/profilePictureSlice";
 
 export default function Header() {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
+  const dispatch = useDispatch();
   const userID = localStorage.getItem("userID");
   // const profilePicture = localStorage.getItem("profilePicture");
   const { profilePicture } = useSelector((state) => state.profilePicture);
@@ -88,6 +90,7 @@ export default function Header() {
 
                 // clear local storage
                 localStorage.clear();
+                dispatch(setProfilePicture(null));
               }}
             >
               <LogoutIcon />

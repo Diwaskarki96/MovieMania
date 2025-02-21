@@ -25,6 +25,7 @@ import {
 import Loader from "../components/Loader";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { setProfilePicture } from "../store/slices/profilePictureSlice";
 
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -58,6 +59,7 @@ const Login = () => {
       localStorage.setItem("role", role);
       localStorage.setItem("userID", userID);
       localStorage.setItem("profilePicture", profilePicture);
+      dispatch(setProfilePicture(profilePicture));
     },
     onError: (error) => {
       dispatch(openErrorSnackbar(error?.response?.data?.msg));

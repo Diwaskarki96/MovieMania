@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialProfilePicture = localStorage.getItem("profilePicture");
+console.log(initialProfilePicture);
 export const profilePictureSlice = createSlice({
   name: "profilePicture",
   initialState: {
