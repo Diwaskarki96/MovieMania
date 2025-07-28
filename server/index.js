@@ -9,6 +9,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const PORT = process.env.PORT;
 const DB_URL = process.env.DB_URL;
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
 
 mongoose.connect(DB_URL).then(() => {
   console.log("Database is connected...");
@@ -23,6 +25,20 @@ app.get("/", (req, res) => {
   res.json({ msg: "Api is working" });
 });
 app.use(errorHandler);
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "My API",
+      version: "1.0.0",
+      description: "API documentation for my project",
+    },
+  },
+  apis: ["./modules/users/user.api.js"], // adjust path(s) where you want to add swagger comments
+};
+
+const specs = swaggerJsdoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.listen(PORT, () => {
   console.log(`Server running at port:${PORT}`);
 });
