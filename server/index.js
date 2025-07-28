@@ -34,7 +34,7 @@ const options = {
       description: "API documentation for my project",
     },
   },
-  apis: ["./modules/users/user.api.js"], // adjust path(s) where you want to add swagger comments
+  apis: ["./modules/users/user.api.js", "./modules/movies/movie.api.js"], // adjust path(s) where you want to add swagger comments
 };
 
 const specs = swaggerJsdoc(options);

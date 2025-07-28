@@ -7,7 +7,21 @@ const {
   movieValidationSchema,
   paginationValidationSchema,
 } = require("./movie.validation");
-
+/**
+@swagger
+tags:
+  - name: Movies
+    description: Movie management
+*/
+/**
+ * @swagger
+ * /movie:
+ *   get:
+ *     summary: Check if movie API is working
+ *     responses:
+ *       200:
+ *         description: Returns a message
+ */
 router.get("/", async (req, res, next) => {
   try {
     res.json({ msg: "movie api is working" });
@@ -29,6 +43,30 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /movie/list/user:
+ *   post:
+ *     summary: List Movies
+ *     tags:
+ *       - Movies
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               page:
+ *                 type: integer
+ *               limit:
+ *                 type: integer
+ *               searchText:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Returns a list of movies
+ */
 router.post("/list/user", async (req, res, next) => {
   try {
     const validateDate = await paginationValidationSchema.validate(req.body);
